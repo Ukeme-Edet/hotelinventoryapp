@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Room, RoomList } from './rooms';
 
 @Component({
@@ -6,7 +6,7 @@ import { Room, RoomList } from './rooms';
   templateUrl: './rooms.component.html',
   styleUrls: ['./rooms.component.scss']
 })
-export class RoomsComponent {
+export class RoomsComponent implements OnInit {
   hotelName = "Hilton Hotel";
 
   numberOfRooms = 10;
@@ -20,6 +20,8 @@ export class RoomsComponent {
     availableRooms: 10,
     bookedRooms: 5
   };
+
+  title: string = "Room List"
 
   roomList!: RoomList[];
 
@@ -60,9 +62,26 @@ export class RoomsComponent {
 
   toggle() {
     this.hideRooms = !this.hideRooms;
+    this.title = this.title.split("").reverse().join("");
   }
 
   selectRoom(room: RoomList) {
     this.selectedRoom = room;
+  }
+
+  addRoom(): void {
+    const room: RoomList = {
+      roomNumber: 4,
+      roomType: "Deluxe Room",
+      ammenities: "Air Conditioner, Free Wi-Fi, TV, Bathroom, Kitchen",
+      price: 500,
+      photos: "https://images.unsplash.com/photo-1518791841217-8f162f1e1131",
+      checkinTime: new Date('11-Nov-2021'),
+      checkoutTime: new Date('12-Nov-2021'),
+      rating: 4.5
+    }
+
+    // this.roomList.push(room);
+    this.roomList = [...this.roomList, room];
   }
 }
