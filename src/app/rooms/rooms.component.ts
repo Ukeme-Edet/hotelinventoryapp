@@ -22,7 +22,7 @@ export class RoomsComponent implements OnInit, DoCheck, AfterViewInit, AfterView
     bookedRooms: 5
   };
 
-  title: string = "Room List"
+  title: string = "Room List";
 
   roomList!: RoomList[];
 
