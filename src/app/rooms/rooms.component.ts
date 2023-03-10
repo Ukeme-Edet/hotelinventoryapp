@@ -2,6 +2,7 @@ import { AfterViewChecked, AfterViewInit, Component, DoCheck, OnInit, QueryList,
 import { Room, RoomList } from './rooms';
 import { HeaderComponent } from '../header/header.component';
 import { RoomsService } from './services/rooms.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-rooms',
@@ -13,7 +14,7 @@ export class RoomsComponent implements OnInit, DoCheck, AfterViewInit, AfterView
 
   numberOfRooms = 10;
 
-  hideRooms = false;
+  hideRooms = true;
 
   selectedRoom!: RoomList;
 
@@ -27,6 +28,14 @@ export class RoomsComponent implements OnInit, DoCheck, AfterViewInit, AfterView
 
   roomList!: RoomList[];
 
+  stream = new Observable<string>(observer => {
+    observer.next("user1");
+    observer.next("user2");
+    observer.next("user3");
+    observer.complete();
+    // observer.error("error");
+  });
+
   @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
 
   @ViewChildren(HeaderComponent) headerChildrenComponenet!: QueryList<HeaderComponent>;
@@ -36,7 +45,15 @@ export class RoomsComponent implements OnInit, DoCheck, AfterViewInit, AfterView
   constructor(@SkipSelf() private roomsSercice: RoomsService) { }
 
   ngOnInit(): void {
-    this.roomList = this.roomsSercice.getRooms();
+    this.stream.subscribe({
+      next: value => console.log(value),
+      complete: () => console.log("complete"),
+      error: err => console.log(err)
+    });
+    this.stream.subscribe(data => console.log(data));
+    this.roomsSercice.getRooms().subscribe(rooms => {
+      this.roomList = rooms;
+    });
   }
 
   ngDoCheck(): void {
@@ -65,7 +82,7 @@ export class RoomsComponent implements OnInit, DoCheck, AfterViewInit, AfterView
 
   addRoom(): void {
     const room: RoomList = {
-      roomNumber: 4,
+      // roomNumber: "4",
       roomType: "Deluxe Room",
       ammenities: "Air Conditioner, Free Wi-Fi, TV, Bathroom, Kitchen",
       price: 500,
@@ -73,9 +90,35 @@ export class RoomsComponent implements OnInit, DoCheck, AfterViewInit, AfterView
       checkinTime: new Date('11-Nov-2021'),
       checkoutTime: new Date('12-Nov-2021'),
       rating: 4.5
-    }
+    };
 
     // this.roomList.push(room);
-    this.roomList = [...this.roomList, room];
+    // this.roomList = [...this.roomList, room];
+    this.roomsSercice.addRoom(room).subscribe(data => {
+      this.roomList = data;
+    });
+  }
+
+  editRoom() {
+    const room: RoomList = {
+      roomNumber: "3",
+      roomType: "Deluxe Room",
+      ammenities: "Air Conditioner, Free Wi-Fi, TV, Bathroom, Kitchen",
+      price: 500,
+      photos: "https://images.unsplash.com/photo-1518791841217-8f162f1e1131",
+      checkinTime: new Date('11-Nov-2021'),
+      checkoutTime: new Date('12-Nov-2021'),
+      rating: 4.5
+    };
+
+    this.roomsSercice.editRoom(room).subscribe(data => {
+      this.roomList = data;
+    });
+  }
+
+  deleteRoom() {
+    this.roomsSercice.delete("3").subscribe(data => {
+      this.roomList = data;
+    })
   }
 }
