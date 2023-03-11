@@ -1,8 +1,8 @@
-import { AfterViewChecked, AfterViewInit, Component, DoCheck, OnInit, QueryList, SkipSelf, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, DoCheck, OnDestroy, OnInit, QueryList, SkipSelf, ViewChild, ViewChildren } from '@angular/core';
 import { Room, RoomList } from './rooms';
 import { HeaderComponent } from '../header/header.component';
 import { RoomsService } from './services/rooms.service';
-import { Observable } from 'rxjs';
+import { Observable, Subject, Subscription, catchError, of, map } from 'rxjs';
 import { HttpEventType } from '@angular/common/http';
 
 @Component({
@@ -10,7 +10,7 @@ import { HttpEventType } from '@angular/common/http';
   templateUrl: './rooms.component.html',
   styleUrls: ['./rooms.component.scss']
 })
-export class RoomsComponent implements OnInit, DoCheck, AfterViewInit, AfterViewChecked {
+export class RoomsComponent implements OnInit, DoCheck, AfterViewInit, AfterViewChecked, OnDestroy {
   hotelName = "Hilton Hotel";
 
   numberOfRooms = 10;
@@ -47,6 +47,24 @@ export class RoomsComponent implements OnInit, DoCheck, AfterViewInit, AfterView
 
   totalBytes = 0;
 
+  subscription!: Subscription;
+
+  error$ = new Subject<string>();
+
+  getError$ = this.error$.asObservable();
+
+  rooms$ = this.roomsSercice.getRooms$.pipe(
+    catchError(err => {
+      // console.log(err);
+      this.error$.next(err.message);
+      return of([]);
+    })
+  );
+
+  roomsCount$ = this.roomsSercice.getRooms$.pipe(
+    map(rooms => rooms.length)
+  );
+
   constructor(@SkipSelf() private roomsSercice: RoomsService) { }
 
   ngOnInit(): void {
@@ -76,9 +94,9 @@ export class RoomsComponent implements OnInit, DoCheck, AfterViewInit, AfterView
       error: err => console.log(err)
     });
     this.stream.subscribe(data => console.log(data));
-    this.roomsSercice.getRooms().subscribe(rooms => {
-      this.roomList = rooms;
-    });
+    // this.roomsSercice.getRooms$.subscribe(rooms => {
+    //   this.roomList = rooms;
+    // });
   }
 
   ngDoCheck(): void {
@@ -145,5 +163,11 @@ export class RoomsComponent implements OnInit, DoCheck, AfterViewInit, AfterView
     this.roomsSercice.delete("3").subscribe(data => {
       this.roomList = data;
     })
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }
