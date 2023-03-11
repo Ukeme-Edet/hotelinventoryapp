@@ -24,7 +24,7 @@
 
 <h1>
     <!-- {{ getError$ | async }} -->
-    Number of Rooms: {{ roomsCount$ | async | json }}
+    Number of Rooms: {{ roomsCount$ | async }}
 </h1>
 
 <div *ngIf="rooms$ | async as rooms">
