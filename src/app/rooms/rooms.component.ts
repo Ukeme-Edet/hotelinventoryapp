@@ -3,6 +3,7 @@ import { Room, RoomList } from './rooms';
 import { HeaderComponent } from '../header/header.component';
 import { RoomsService } from './services/rooms.service';
 import { Observable } from 'rxjs';
+import { HttpEventType } from '@angular/common/http';
 
 @Component({
   selector: 'app-rooms',
@@ -42,9 +43,33 @@ export class RoomsComponent implements OnInit, DoCheck, AfterViewInit, AfterView
 
   // roomService: RoomsService = new RoomsService();
 
+  error!: string;
+
+  totalBytes = 0;
+
   constructor(@SkipSelf() private roomsSercice: RoomsService) { }
 
   ngOnInit(): void {
+    this.roomsSercice.getPhotos().subscribe(event => {
+      switch (event.type) {
+        case HttpEventType.Sent: {
+          console.log("Request has been made!");
+          break;
+        }
+        case HttpEventType.ResponseHeader: {
+          console.log("Request success!");
+          break;
+        }
+        case HttpEventType.DownloadProgress: {
+          this.totalBytes += event.loaded;
+          break;
+        }
+        case HttpEventType.Response: {
+          console.log(event.body);
+        }
+      }
+    });
+
     this.stream.subscribe({
       next: value => console.log(value),
       complete: () => console.log("complete"),
