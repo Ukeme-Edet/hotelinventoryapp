@@ -3,7 +3,7 @@ import { RoomList } from '../rooms';
 // import { environment } from '../../../environments/environment';
 import { APP_SERVICE_CONFIG } from 'src/app/AppConfig/appconfig.service';
 import { AppConfig } from 'src/app/AppConfig/appconfig.interface';
-import { HttpClient, HttpRequest } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { PhotoData } from './photodata';
 import { shareReplay } from 'rxjs';
 
@@ -12,6 +12,8 @@ import { shareReplay } from 'rxjs';
 })
 export class RoomsService {
   roomList: RoomList[] = [];
+
+  // headers = new HttpHeaders({ "token": "12345asdf" });
 
   getRooms$ = this.http.get<RoomList[]>("/api/rooms").pipe(
     shareReplay(1)
