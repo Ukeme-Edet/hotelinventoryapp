@@ -2,6 +2,7 @@ import { AfterViewChecked, AfterViewInit, Component, ElementRef, Inject, OnInit,
 import { RoomsComponent } from './rooms/rooms.component';
 import { LoggerService } from './logger.service';
 import { LocalStorageToken } from './localstorage.token';
+import { InitService } from './init.service';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +18,9 @@ export class AppComponent implements OnInit {
 
   @ViewChild('name', { static: true }) name!: ElementRef;
 
-  constructor(@Optional() private loggerService: LoggerService, @Inject(LocalStorageToken) private localStorage: Storage) { }
+  constructor(@Optional() private loggerService: LoggerService, @Inject(LocalStorageToken) private localStorage: Storage, private initService: InitService) {
+    console.log(initService.config);
+  }
   
   ngOnInit(): void {
     this.loggerService?.log('AppComponenet.ngOnInit()')
