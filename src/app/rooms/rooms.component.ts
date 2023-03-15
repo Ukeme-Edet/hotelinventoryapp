@@ -127,7 +127,7 @@ export class RoomsComponent implements OnInit, DoCheck, AfterViewInit, AfterView
     const room: RoomList = {
       // roomNumber: "4",
       roomType: "Deluxe Room",
-      ammenities: "Air Conditioner, Free Wi-Fi, TV, Bathroom, Kitchen",
+      amenities: "Air Conditioner, Free Wi-Fi, TV, Bathroom, Kitchen",
       price: 500,
       photos: "https://images.unsplash.com/photo-1518791841217-8f162f1e1131",
       checkinTime: new Date('11-Nov-2021'),
@@ -146,7 +146,7 @@ export class RoomsComponent implements OnInit, DoCheck, AfterViewInit, AfterView
     const room: RoomList = {
       roomNumber: "3",
       roomType: "Deluxe Room",
-      ammenities: "Air Conditioner, Free Wi-Fi, TV, Bathroom, Kitchen",
+      amenities: "Air Conditioner, Free Wi-Fi, TV, Bathroom, Kitchen",
       price: 500,
       photos: "https://images.unsplash.com/photo-1518791841217-8f162f1e1131",
       checkinTime: new Date('11-Nov-2021'),
