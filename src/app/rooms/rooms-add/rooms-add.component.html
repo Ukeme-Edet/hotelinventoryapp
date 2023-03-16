@@ -6,7 +6,7 @@ Pristine: {{ roomsForm.pristine | json }} Dirty:
   {{ successMessage }}
 </div>
 
-<form #roomsForm="ngForm" (ngSubmit)="addRoom()">
+<form #roomsForm="ngForm" (ngSubmit)="addRoom(roomsForm)">
   <div class="form-group">
     <input
       required
@@ -19,7 +19,7 @@ Pristine: {{ roomsForm.pristine | json }} Dirty:
   </div>
   <div class="form-group">
     <input
-    #roomAmenities="ngModel"
+      #roomAmenities="ngModel"
       required
       minlength="5"
       maxlength="20"
@@ -29,7 +29,12 @@ Pristine: {{ roomsForm.pristine | json }} Dirty:
       [(ngModel)]="room.amenities"
       placeholder="Amenities"
     />
-    <div class="alert alert-danger" *ngIf="roomAmenities.errors?.['minlength']">Amenities should be minimum 5 characters</div>
+    <div class="alert alert-danger" *ngIf="roomAmenities.errors?.['minlength']">
+      Amenities should be minimum 5 characters
+    </div>
+    <div *ngIf="roomAmenities.errors?.['required'] && roomAmenities.dirty">
+      Please provide the amenities
+    </div>
   </div>
   <div class="form-group">
     <input

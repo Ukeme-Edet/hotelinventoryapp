@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
   
   ngOnInit(): void {
     this.loggerService?.log('AppComponenet.ngOnInit()')
-    this.name.nativeElement.innerText = "Hilton Hotels";
+    // this.name.nativeElement.innerText = "Hilton Hotels";
     this.localStorage.setItem("name", "Hilton Hotels");
   }
 
