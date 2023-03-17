@@ -19,7 +19,7 @@
 </div>
 
 <div>
-    <button (click)="addRoom()">Add room</button>
+    <button routerLink="add">Add room</button>
 </div>
 
 <h1>
@@ -36,3 +36,4 @@
 <button (click)="deleteRoom()">Delete Room</button>
 
 <h1>{{ totalBytes }} loaded</h1>
+<router-outlet></router-outlet>
