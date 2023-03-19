@@ -13,6 +13,11 @@ const routes: Routes = [
       import('./rooms/rooms.module').then((a) => a.RoomsModule),
   },
   { path: 'login', component: LoginComponent },
+  {
+    path: 'booking',
+    loadChildren: () =>
+      import('./booking/booking.module').then((m) => m.BookingModule),
+  },
   { path: '**', component: NotfoundComponent },
 ];
 
