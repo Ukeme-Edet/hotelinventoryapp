@@ -4,6 +4,7 @@ import { HeaderComponent } from '../header/header.component';
 import { RoomsService } from './services/rooms.service';
 import { Observable, Subject, Subscription, catchError, of, map } from 'rxjs';
 import { HttpEventType } from '@angular/common/http';
+import { ConfigService } from '../services/config.service';
 
 @Component({
   selector: 'app-rooms',
@@ -65,7 +66,7 @@ export class RoomsComponent implements OnInit, DoCheck, AfterViewInit, AfterView
     map(rooms => rooms.length)
   );
 
-  constructor(@SkipSelf() private roomsSercice: RoomsService) { }
+  constructor(@SkipSelf() private roomsSercice: RoomsService, private configService: ConfigService) { }
 
   ngOnInit(): void {
     this.roomsSercice.getPhotos().subscribe(event => {
