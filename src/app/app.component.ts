@@ -4,6 +4,8 @@ import { LoggerService } from './logger.service';
 import { LocalStorageToken } from './localstorage.token';
 import { InitService } from './init.service';
 import { ConfigService } from './services/config.service';
+import { NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -19,11 +21,27 @@ export class AppComponent implements OnInit {
 
   @ViewChild('name', { static: true }) name!: ElementRef;
 
-  constructor(@Optional() private loggerService: LoggerService, @Inject(LocalStorageToken) private localStorage: Storage, private initService: InitService, private configService: ConfigService) {
+  constructor(@Optional() private loggerService: LoggerService, @Inject(LocalStorageToken) private localStorage: Storage, private initService: InitService, private configService: ConfigService, private router: Router) {
     console.log(initService.config);
   }
-  
+
   ngOnInit(): void {
+    // this.router.events.subscribe(event => {
+    //   console.log(event);
+    // });
+
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationStart)
+    ).subscribe(event => {
+      console.log("Navigation Started");
+    });
+    
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(event => {
+      console.log("Navigation Completed");
+    });
+    
     this.loggerService?.log('AppComponenet.ngOnInit()')
     // this.name.nativeElement.innerText = "Hilton Hotels";
     this.localStorage.setItem("name", "Hilton Hotels");
