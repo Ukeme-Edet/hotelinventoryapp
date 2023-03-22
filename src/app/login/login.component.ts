@@ -16,7 +16,7 @@ export class LoginComponent {
 
   login() {
     if (this.loginService.login(this.email, this.password)) {
-      this.route.navigateByUrl("rooms/add");
+      this.route.navigateByUrl("rooms");
     }
   }
 
