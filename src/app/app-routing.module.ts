@@ -10,6 +10,7 @@ const routes: Routes = [
   { path: 'employee', component: EmployeeComponent, canActivate: [LoginGuard] },
   {
     path: 'rooms',
+    canLoad: [LoginGuard],
     loadChildren: () =>
       import('./rooms/rooms.module').then((a) => a.RoomsModule), canActivate: [LoginGuard]
   },
