@@ -7,17 +7,17 @@ import { LoginGuard } from './guards/login.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'employee', component: EmployeeComponent, canActivate: [() => Inject(LoginGuard).canActivate()] },
+  { path: 'employee', component: EmployeeComponent, canActivate: [LoginGuard] },
   {
     path: 'rooms',
     loadChildren: () =>
-      import('./rooms/rooms.module').then((a) => a.RoomsModule), canActivate: [() => Inject(LoginGuard).canActivate()]
+      import('./rooms/rooms.module').then((a) => a.RoomsModule), canActivate: [LoginGuard]
   },
   { path: 'login', component: LoginComponent },
   {
     path: 'booking',
     loadChildren: () =>
-      import('./booking/booking.module').then((m) => m.BookingModule), canActivate: [() => Inject(LoginGuard).canActivate()]
+      import('./booking/booking.module').then((m) => m.BookingModule), canActivate: [LoginGuard]
   },
   { path: '**', component: NotfoundComponent },
 ];
